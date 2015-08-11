@@ -17,8 +17,7 @@ fi
 trap "{ $DIR/hdfs-mesos-killtree "$$" ; exit 0; }" EXIT
 
 function bootstrap_standby() {
-  $DIR/hdfs zkfc -formatZK -force
-  exec $DIR/hdfs namenode -bootstrapStandby -force
+  $DIR/hdfs namenode -bootstrapStandby -force
 }
 
 function format_namenode() {

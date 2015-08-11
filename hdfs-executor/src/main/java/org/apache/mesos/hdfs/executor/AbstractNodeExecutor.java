@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -219,18 +220,12 @@ public abstract class AbstractNodeExecutor implements Executor {
     }
     try {
       log.info(String.format("Reloading hdfs-site.xml from %s", configUri));
-      ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c",
-        String.format("curl -o hdfs-site.xml %s && mv hdfs-site.xml etc/hadoop/", configUri));
-      Process process = processBuilder.start();
-      //TODO(nicgrayson) check if the config has changed
-      redirectProcess(process);
-      int exitCode = process.waitFor();
-      if (exitCode == 0) {
-        log.info("Finished reloading hdfs-site.xml, exited with status " + exitCode);
-      } else {
-        log.error("Error reloading hdfs-site.xml.");
-      }
-    } catch (InterruptedException | IOException e) {
+
+      URL url = new URL(configUri);
+      File file = new File("etc/hadoop/hdfs-site.xml");
+      org.apache.commons.io.FileUtils.copyURLToFile(url, file);
+
+    } catch (IOException e) {
       log.error("Caught exception", e);
     }
   }

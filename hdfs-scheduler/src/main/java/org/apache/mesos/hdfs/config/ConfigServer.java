@@ -46,6 +46,7 @@ public class ConfigServer {
     server = new Server(hdfsFrameworkConfig.getConfigServerPort());
     ResourceHandler resourceHandler = new ResourceHandler();
     resourceHandler.setResourceBase(hdfsFrameworkConfig.getExecutorPath());
+    resourceHandler.setDirectoriesListed(true);
     HandlerList handlers = new HandlerList();
     handlers.setHandlers(new Handler[]{
       resourceHandler, new ServeHdfsConfigHandler()});

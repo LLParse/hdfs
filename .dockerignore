@@ -1,0 +1,8 @@
+.gradle/*
+bin/*
+build/hdfs-mesos-*.tgz
+build/cache/*
+conf/*
+example-conf/*
+gradle/*
+hdfs-*/*

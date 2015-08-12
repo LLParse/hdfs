@@ -18,7 +18,7 @@ public final class FileUtils {
 
   public static void createDir(File dataDir) {
     if (dataDir.exists()) {
-      LOG.info("data dir exits:" + dataDir);
+      LOG.info("data dir exists:" + dataDir);
     } else if (!dataDir.mkdirs()) {
       LOG.error("unable to create dir: " + dataDir);
     }

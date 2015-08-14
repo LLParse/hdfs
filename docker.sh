@@ -1,7 +1,12 @@
 #!/bin/bash
 
+HOST=127.0.0.1
 VERSION=0.22.1-1.0.ubuntu1404
 SLAVES=6
+
+if [ `which boot2docker` != "" ]; then
+  HOST=$(boot2docker ip 2>/dev/null)
+fi
 
 docker run -d \
 -p 2181:2181 \
@@ -17,7 +22,7 @@ for num in `seq 1 $SLAVES`; do
     -p $PORT:$PORT \
     --name=mesos-slave$num \
     mesosphere/mesos-slave:$VERSION \
-    --master=zk://docker:2181/mesos \
+    --master=zk://${HOST}:2181/mesos \
     --port=$PORT \
     --hostname=mesos-slave$num)
   host=$(echo $id | cut -c1-12)
@@ -32,8 +37,8 @@ docker run -d \
   --net=host \
   --name=mesos-master \
   mesosphere/mesos-master:$VERSION \
-  --ip=192.168.59.103 \
-  --zk=zk://docker:2181/mesos \
+  --ip=${HOST} \
+  --zk=zk://${HOST}:2181/mesos \
   --work_dir=/var/lib/mesos \
   --quorum=1
 
